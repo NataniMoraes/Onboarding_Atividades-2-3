@@ -29,7 +29,7 @@ public class LeadService {
     }
 
 //BUSCAR LEAD POR ID
-    public Optional<Lead> buscarPorID(Long id){
+    public Optional<Lead> buscarPorId(Long id){
         return repository.findById(id);
     }
 
