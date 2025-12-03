@@ -27,10 +27,6 @@ public class Lead {
     @Size(min = 3, message = "Nome deve ter no mínimo 3 caracteres")
     private String nome;
 
-    @NotBlank(message = "Nome é obrigatório")
-    @Size(min = 3, message = "Nome deve ter no mínimo 3 caracteres")
-    private String nome;
-
     @NotBlank(message = "Email é obrigatório")
     @Email(message = "Email inválido")
     private String email;
@@ -39,6 +35,7 @@ public class Lead {
     private String telefone;
 
     private String empresa;
+
     private String observacoes;
 
     @Enumerated(EnumType.STRING)
