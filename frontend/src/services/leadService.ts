@@ -1,3 +1,4 @@
+//service
 import type { Lead } from "../types/Lead";
 
 const API_URL = 'http://localhost:8080/api/leads';

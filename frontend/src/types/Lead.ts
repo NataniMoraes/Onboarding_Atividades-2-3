@@ -1,5 +1,8 @@
+
+//type
 export type StatusLead = 'NOVO' | 'CONTATO' | 'PROPOSTA' | 'NEGOCIACAO' | 'GANHO' | 'PERDIDO';
 
+//interface
 export interface Lead {
   id: number;
   nome: string;

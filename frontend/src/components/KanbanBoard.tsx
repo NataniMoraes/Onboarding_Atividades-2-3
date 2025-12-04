@@ -1,6 +1,5 @@
 import { useState, useEffect } from 'react';
 
-// MANTINE
 import { Container, Title, Loader, Text } from '@mantine/core';
 import { notifications } from '@mantine/notifications';
 
