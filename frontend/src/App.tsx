@@ -3,14 +3,14 @@ import { Notifications } from "@mantine/notifications";
 import "@mantine/core/styles.css";
 import "@mantine/notifications/styles.css";
 
+import { KanbanBoard } from "./components/KanbanBoard";
+
 
 function App() {
   return (
     <MantineProvider>
       <Notifications />
-      <div style={{ padding: '20px' }}>
-        <h1>Sistema de Leads - Kanban</h1>
-      </div>
+      <KanbanBoard />
     </MantineProvider>
   );
 }
