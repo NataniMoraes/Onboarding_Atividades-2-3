@@ -32,8 +32,12 @@ export const leadService = {
 
 //PATCH: ATUALIZAR APENAS O STATUS DO LEAD
     async updateStatus(id: number, status: StatusLead): Promise<Lead> {
-        const response = await fetch(`${API_URL}/${id}/status?status=${status}`,{
+        const response = await fetch(`${API_URL}/${id}/status`,{
             method: 'PATCH',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({ status: status }),
         });
 
         if (!response.ok){
