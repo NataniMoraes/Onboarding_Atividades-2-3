@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
 
 //Mantine
-import { Container, Title, Loader, Text, Grid, Paper, Stack, Badge } from '@mantine/core';
+import { Container, Title, Loader, Text, Grid, Paper, Stack, Badge, Button } from '@mantine/core';
 import { notifications } from '@mantine/notifications';
 
 //@hello-pangea para o dnd
@@ -9,6 +9,7 @@ import { DragDropContext, Droppable, Draggable, type DropResult } from '@hello-p
 
 import type { Lead, StatusLead } from '../types/Lead';
 import { leadService } from '../services/leadService';
+import { CadastroLeadModal } from './CadastroLeadModal';
 
 interface Coluna {
   status: StatusLead;
@@ -17,8 +18,13 @@ interface Coluna {
 }
 
 export function KanbanBoard() {
+
   const [leads, setLeads] = useState<Lead[]>([]);  
+  
   const [loading, setLoading] = useState(true);
+  
+  const [modalCadastroAberto, setModalCadastroAberto] = useState(false);
+
 
    const colunas: Coluna[] = [
     { status: 'NOVO', titulo: '🆕 Novo', cor: 'blue' },
@@ -87,23 +93,39 @@ export function KanbanBoard() {
     }
   }
 
+  function handleLeadCriado(novoLead:Lead){
+    setLeads(prevLeads => [novoLead, ...prevLeads]);
+  }
+
   if (loading) {
     return (
-      <Container>
+      <Container size="md" py="md" px= "md">
         <Loader size="xl" />
-        <Text>Carregando leads...</Text>
+        <Text>Carregando Leads...</Text>
       </Container>
     );
   }
 
   return (
-    <Container size="xl" py="md">
-      
-      <Title order={1} mb="lg">Leads</Title>
+    <Container 
+      fluid py="md" px="md"
+    >
+      <Stack gap="lg" mb="lg">
+        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+                 
+          <Title order={1}>Leads</Title>
+          
+          <Button 
+            onClick={() => setModalCadastroAberto(true)}           
+            size="sm"          >
+            + Novo Lead
+          </Button>
+        </div>
+      </Stack> 
 
       <DragDropContext onDragEnd={handleDragEnd}>
         
-        <Grid gutter="md">
+        <Grid justify="center" align="flex-start" gutter="md" >
           
           {colunas.map((coluna) => {
             
@@ -112,7 +134,7 @@ export function KanbanBoard() {
             return (
               <Grid.Col key={coluna.status} span={2}>
                 
-                <Paper shadow="sm" p="md" withBorder>
+                <Paper shadow="sm" p="lg" withBorder h="100%">
 
                   <Stack gap="xs" mb="md">
                     <Text fw={700} size="sm">{coluna.titulo}</Text>
@@ -187,6 +209,11 @@ export function KanbanBoard() {
           })}
         </Grid>
       </DragDropContext>
+      <CadastroLeadModal
+        opened={modalCadastroAberto}
+        onClose={() => setModalCadastroAberto(false)}
+        onLeadCriado={handleLeadCriado}
+      />
     </Container>
   );
 }
