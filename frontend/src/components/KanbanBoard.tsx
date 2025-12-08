@@ -3,6 +3,8 @@ import { useState, useEffect } from 'react';
 //Mantine
 import { Container, Title, Loader, Text, Grid, Paper, Stack, Badge, Button } from '@mantine/core';
 import { notifications } from '@mantine/notifications';
+import { ModalsProvider } from '@mantine/modals';
+
 
 //@hello-pangea para o dnd
 import { DragDropContext, Droppable, Draggable, type DropResult } from '@hello-pangea/dnd';
@@ -10,6 +12,7 @@ import { DragDropContext, Droppable, Draggable, type DropResult } from '@hello-p
 import type { Lead, StatusLead } from '../types/Lead';
 import { leadService } from '../services/leadService';
 import { CadastroLeadModal } from './CadastroLeadModal';
+import { DetalhesLeadModal } from './DetalhesModal';
 
 interface Coluna {
   status: StatusLead;
@@ -25,7 +28,8 @@ export function KanbanBoard() {
   
   const [modalCadastroAberto, setModalCadastroAberto] = useState(false);
 
-
+    const [leadSelecionado, setLeadSelecionado] = useState<Lead | null>(null);
+    
    const colunas: Coluna[] = [
     { status: 'NOVO', titulo: '🆕 Novo', cor: 'blue' },
     { status: 'CONTATO', titulo: '📞 Contato', cor: 'cyan' },
@@ -97,9 +101,19 @@ export function KanbanBoard() {
     setLeads(prevLeads => [novoLead, ...prevLeads]);
   }
 
+  function handleLeadDeletado(leadId: number) {
+    setLeads(prevLeads => prevLeads.filter(lead => lead.id !== leadId));
+  }
+
+  function handleCardClick(lead: Lead) {
+    setLeadSelecionado(lead);
+  }
+
+
+
   if (loading) {
     return (
-      <Container size="md" py="md" px= "md">
+      <Container>
         <Loader size="xl" />
         <Text>Carregando Leads...</Text>
       </Container>
@@ -108,7 +122,10 @@ export function KanbanBoard() {
 
   return (
     <Container 
-      fluid py="md" px="md"
+      size="xl" py="xl" px= "xl"
+      style={{ 
+        maxWidth: '1400px',
+        margin: '0 auto'}}
     >
       <Stack gap="lg" mb="lg">
         <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
@@ -125,7 +142,7 @@ export function KanbanBoard() {
 
       <DragDropContext onDragEnd={handleDragEnd}>
         
-        <Grid justify="center" align="flex-start" gutter="md" >
+        <Grid gutter="md" align="flex-start" >
           
           {colunas.map((coluna) => {
             
@@ -160,7 +177,6 @@ export function KanbanBoard() {
                           <Draggable
                             key={lead.id}
                             draggableId={`lead-${lead.id}`}
-                            
                             index={index}
                           >
                             {(provided) => (
@@ -175,11 +191,14 @@ export function KanbanBoard() {
                                 p="sm"
                                 mb="sm"
                                 withBorder
+                                  onClick={() => handleCardClick(lead)}
+                                
                                 style={{
                                   ...provided.draggableProps.style,
-                                  
-                                  cursor: 'grab',
+                                  cursor: 'pointer',
                                 }}
+
+                              
                               >
                                 <Stack gap="xs">
                                   <Text fw={600} size="sm">{lead.nome}</Text>
@@ -209,11 +228,18 @@ export function KanbanBoard() {
           })}
         </Grid>
       </DragDropContext>
+
       <CadastroLeadModal
         opened={modalCadastroAberto}
         onClose={() => setModalCadastroAberto(false)}
         onLeadCriado={handleLeadCriado}
       />
+      <DetalhesLeadModal
+        lead={leadSelecionado}
+        onClose={() => setLeadSelecionado(null)}
+        onLeadDeletado={handleLeadDeletado}
+      />
+
     </Container>
   );
 }
