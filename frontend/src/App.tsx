@@ -1,16 +1,22 @@
 import { MantineProvider } from "@mantine/core";
 import { Notifications } from "@mantine/notifications";
+import { ModalsProvider } from '@mantine/modals'
+
+import { KanbanBoard } from "./components/KanbanBoard";
+
 import "@mantine/core/styles.css";
 import "@mantine/notifications/styles.css";
 
-import { KanbanBoard } from "./components/KanbanBoard";
+
 
 
 function App() {
   return (
     <MantineProvider>
-      <Notifications />
-      <KanbanBoard />
+       <ModalsProvider>
+        <Notifications />
+        <KanbanBoard />
+       </ModalsProvider>      
     </MantineProvider>
   );
 }
