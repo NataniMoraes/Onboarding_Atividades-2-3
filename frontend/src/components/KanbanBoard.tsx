@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
 
 //Mantine
-import { Container, Title, Loader, Text, Grid, Paper, Stack, Badge, Button } from '@mantine/core';
+import { Container, Title, Loader, Text, Grid, Paper, Stack, Badge, Button, Center } from '@mantine/core';
 import { notifications } from '@mantine/notifications';
 import { ModalsProvider } from '@mantine/modals';
 
@@ -111,12 +111,23 @@ export function KanbanBoard() {
 
 
 
-  if (loading) {
+  /*if (loading) {
     return (
       <Container>
-        <Loader size="xl" />
+        <Loader size="sm"/>
         <Text>Carregando Leads...</Text>
       </Container>
+    );
+  }*/
+
+    if (loading) {
+    return (
+      <Center h="100vh"> {/* Define altura total da tela */}
+        <Stack align="center" gap="md"> {/* Empilha Loader e Texto */}
+          <Loader size="xl" type="bars" /> {/* Aumentado para XL. Type opcional (bars, dots, oval) */}
+          <Text size="lg" c="dimmed">Carregando Leads...</Text>
+        </Stack>
+      </Center>
     );
   }
 
