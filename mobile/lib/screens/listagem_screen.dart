@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import '../models/lead.dart';
-import '../services/lead_service.dart';
+import '../services/LeadService.dart';
+import '../screens/detalhes_screen.dart';
 
 class ListagemScreen extends StatefulWidget {
   @override
@@ -207,8 +208,16 @@ class _ListagemScreenState extends State<ListagemScreen> {
             ),
 
             trailing: Icon(Icons.chevron_right),
-            onTap: () {
-              print('Clicou no lead: ${lead.nome}');
+            onTap: () async  {
+              final resultado = await Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                      builder: (context) => DetalhesScreen(lead: lead),
+                  ),
+              );
+              if (resultado == true) {
+                carregarLeads();
+              }
             },
           );
         }).toList(),
