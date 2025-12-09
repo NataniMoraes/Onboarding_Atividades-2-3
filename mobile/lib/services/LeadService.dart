@@ -3,7 +3,7 @@ import 'package:http/http.dart' as http;
 import '../models/lead.dart';
 
 class LeadService {
-  static const String baseUrl = 'http://10.0.2.2:8080/api/leads';
+  static const String baseUrl = 'http://localhost:8080/api/leads';//Para emulador 'http://10.0.2.2:8080/api/leads';
   static Future<List<Lead>> getAll() async {
     try {
       final response = await http.get(Uri.parse(baseUrl));
